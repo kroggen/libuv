@@ -20,12 +20,12 @@ jobs:
       shell: cmd
       run: |
         call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
-        cl /c /MT -Iinclude -Iinclude\uv -Isrc -DWIN32_LEAN_AND_MEAN ${{ env.SOURCES }}
+        cl /c -Iinclude -Iinclude\uv -Isrc -DWIN32_LEAN_AND_MEAN ${{ env.SOURCES }}
         lib /OUT:libuv.lib ${{ env.OBJECTS }}
         dir
         if not exist static mkdir static
         move /y libuv.lib static\
-        cl /MT -Iinclude -Iinclude\uv -Isrc /D_USRDLL /D_WINDLL -DWIN32_LEAN_AND_MEAN ${{ env.SOURCES }} src\windll\dllmain.c /LD /Felibuv.dll /link
+        cl -Iinclude -Iinclude\uv -Isrc /D_USRDLL /D_WINDLL -DWIN32_LEAN_AND_MEAN ${{ env.SOURCES }} src\windll\dllmain.c /LD /Felibuv.dll /link
         dir
         dumpbin /dependents libuv.dll
         mkdir x64
