@@ -6,7 +6,7 @@ on:
 
 env:
   SOURCES: src/fs-poll.c src/idna.c src/inet.c src/random.c src/strscpy.c src/threadpool.c src/timer.c src/uv-data-getter-setters.c src/uv-common.c src/version.c src/win/async.c src/win/core.c src/win/detect-wakeup.c src/win/dl.c src/win/error.c src/win/fs-event.c src/win/fs.c src/win/getaddrinfo.c src/win/getnameinfo.c src/win/handle.c src/win/loop-watcher.c src/win/pipe.c src/win/poll.c src/win/process-stdio.c src/win/process.c src/win/signal.c src/win/stream.c src/win/tcp.c src/win/thread.c src/win/tty.c src/win/udp.c src/win/util.c src/win/winapi.c src/win/winsock.c
-
+  OBJECTS: src/fs-poll.o src/idna.o src/inet.o src/random.o src/strscpy.o src/threadpool.o src/timer.o src/uv-data-getter-setters.o src/uv-common.o src/version.o src/win/async.o src/win/core.o src/win/detect-wakeup.o src/win/dl.o src/win/error.o src/win/fs-event.o src/win/fs.o src/win/getaddrinfo.o src/win/getnameinfo.o src/win/handle.o src/win/loop-watcher.o src/win/pipe.o src/win/poll.o src/win/process-stdio.o src/win/process.o src/win/signal.o src/win/stream.o src/win/tcp.o src/win/thread.o src/win/tty.o src/win/udp.o src/win/util.o src/win/winapi.o src/win/winsock.o
 
 jobs:
   build:
@@ -20,8 +20,8 @@ jobs:
       shell: cmd
       run: |
         call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
-        cl /c /MT -Iinclude -Iinclude\uv -Isrc -DWIN32_LEAN_AND_MEAN -D_WIN32_WINNT=0x0600 ${{ env.SOURCES }} /Folibuv.obj
-        lib libuv.obj
+        cl /c /MT -Iinclude -Iinclude\uv -Isrc -DWIN32_LEAN_AND_MEAN -D_WIN32_WINNT=0x0600 ${{ env.SOURCES }}
+        lib /OUT:libuv.lib ${{ env.OBJECTS }}
         dir
         if not exist static mkdir static
         move /y libuv.lib static\
@@ -37,8 +37,8 @@ jobs:
       shell: cmd
       run: |
         call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars32.bat"
-        cl /c /MT -Iinclude -Iinclude\uv -Isrc -DWIN32_LEAN_AND_MEAN -D_WIN32_WINNT=0x0600 ${{ env.SOURCES }} /Folibuv.obj
-        lib libuv.obj
+        cl /c /MT -Iinclude -Iinclude\uv -Isrc -DWIN32_LEAN_AND_MEAN -D_WIN32_WINNT=0x0600 ${{ env.SOURCES }}
+        lib /OUT:libuv.lib ${{ env.OBJECTS }}
         dir
         if not exist static mkdir static
         move /y libuv.lib static\
