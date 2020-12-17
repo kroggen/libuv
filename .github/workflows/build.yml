@@ -19,7 +19,7 @@ jobs:
     - name: build x64
       shell: cmd
       run: |
-        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
         cl /c /MT -Iinclude -Iinclude\uv -Isrc -DWIN32_LEAN_AND_MEAN -D_WIN32_WINNT=0x0600 ${{ env.SOURCES }}
         lib /OUT:libuv.lib ${{ env.OBJECTS }}
         dir
@@ -36,7 +36,7 @@ jobs:
     - name: build win32
       shell: cmd
       run: |
-        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars32.bat"
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Auxiliary\Build\vcvars32.bat"
         cl /c /MT -Iinclude -Iinclude\uv -Isrc -DWIN32_LEAN_AND_MEAN -D_WIN32_WINNT=0x0600 ${{ env.SOURCES }}
         lib /OUT:libuv.lib ${{ env.OBJECTS }}
         dir
