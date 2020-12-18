@@ -18,8 +18,32 @@ jobs:
         export ARCH="x64"
         rm -rf build
         mkdir -p build
-        (cd build && cmake .. -A"x64" -DBUILD_TESTING=OFF)
-        cmake --build build --config "Release"
+        (cd build && cmake .. -A"x64" -DBUILD_TESTING=OFF --verbose)
+        cmake --build build --config "Release" --verbose
+        # list files
+        ls -l build/Release
+        # static library
+        export dist=${ARCH}/static
+        mkdir -p ${dist}
+        mv build/Release/uv_a.lib  ${dist}/uv.lib
+        # shared library
+        mv build/Release/uv.dll ${ARCH}/
+        mv build/Release/uv.lib ${ARCH}/
+        # list files
+        ls -l ${ARCH}/
+        # list dependencies
+        dumpbin /dependents ${ARCH}/uv.dll
+
+
+    - name: Build x86
+      if: false  # build for Windows 32-bit is disabled
+      shell: bash
+      run: |
+        export ARCH="x86"
+        rm -rf build
+        mkdir -p build
+        (cd build && cmake .. -A"x86" -DBUILD_TESTING=OFF --verbose)
+        cmake --build build --config "Release" --verbose
         # list files
         ls -l build/Release
         # static library
@@ -32,22 +56,11 @@ jobs:
         # list files
         ls -l ${ARCH}/
 
-    - name: Build x86
-      shell: bash
-      run: |
-        export ARCH="x86"
-        rm -rf build
-        mkdir -p build
-        (cd build && cmake .. --config "Release" -A"x86" -DBUILD_TESTING=OFF)
-        cmake --build build --config "Release"
-        # list files
-        ls -l build/Release
-        # static library
-        export dist=${ARCH}/static
-        mkdir -p ${dist}
-        mv build/Release/uv_a.lib  ${dist}/uv.lib
-        # shared library
-        mv build/Release/uv.dll ${ARCH}/
-        mv build/Release/uv.lib ${ARCH}/
-        # list files
-        ls -l ${ARCH}/
+
+    - name: upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: libuv-windows
+        path: |
+          x64
+          #x86
