@@ -4,9 +4,6 @@ on:
   push:
     branches: [ cmake ]
 
-env:
-  BUILD_TYPE: Release
-
 jobs:
   build:
 
@@ -15,14 +12,40 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Build
+    - name: Build x64
       shell: bash
       run: |
+        export ARCH="x64"
+        rm -rf build
         mkdir -p build
-        (cd build && cmake .. -DBUILD_TESTING=ON)
-        cmake --build build
-        # Run tests:
-        (cd build && ctest -C Debug --output-on-failure)
-        # Or manually run tests:
-        #build/uv_run_tests                        # shared library build
-        #build/uv_run_tests_a                      # static library build
+        cd build && cmake .. -A"x64"
+        cmake --build build --config "Release"
+        # list files
+        ls -l build/Release
+        # static library
+        export dist=${ARCH}/static
+        mkdir -p ${dist}
+        mv build/Release/uv_a.lib  ${dist}/uv.lib
+        # shared library
+        mv build/Release/* ${ARCH}/
+        # list files
+        ls -l ${ARCH}/
+
+    - name: Build x86
+      shell: bash
+      run: |
+        export ARCH="x86"
+        rm -rf build
+        mkdir -p build
+        cd build && cmake .. -A"x86"
+        cmake --build build --config "Release"
+        # list files
+        ls -l build/Release
+        # static library
+        export dist=${ARCH}/static
+        mkdir -p ${dist}
+        mv build/Release/uv_a.lib  ${dist}/uv.lib
+        # shared library
+        mv build/Release/* ${ARCH}/
+        # list files
+        ls -l ${ARCH}/
