@@ -19,7 +19,7 @@ jobs:
         rm -rf build
         mkdir -p build
         (cd build && cmake .. -A"x64" -DBUILD_TESTING=OFF)
-        cmake --build build --config "Release" --verbose
+        cmake --build build --config "Release" --verbose -- /MT
         # list files
         ls -l build/Release
         # static library
@@ -46,7 +46,7 @@ jobs:
         rm -rf build
         mkdir -p build
         (cd build && cmake .. -A"x86" -DBUILD_TESTING=OFF)
-        cmake --build build --config "Release" --verbose
+        cmake --build build --config "Release" --verbose -- /MT
         # list files
         ls -l build/Release
         # static library
