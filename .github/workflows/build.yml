@@ -18,7 +18,7 @@ jobs:
         export ARCH="x64"
         rm -rf build
         mkdir -p build
-        (cd build && cmake .. -A"x64")
+        (cd build && cmake .. -A"x64" -DBUILD_TESTING=OFF)
         cmake --build build --config "Release"
         # list files
         ls -l build/Release
@@ -27,7 +27,8 @@ jobs:
         mkdir -p ${dist}
         mv build/Release/uv_a.lib  ${dist}/uv.lib
         # shared library
-        mv build/Release/* ${ARCH}/
+        mv build/Release/uv.dll ${ARCH}/
+        mv build/Release/uv.lib ${ARCH}/
         # list files
         ls -l ${ARCH}/
 
@@ -37,7 +38,7 @@ jobs:
         export ARCH="x86"
         rm -rf build
         mkdir -p build
-        (cd build && cmake .. -A"x86")
+        (cd build && cmake .. --config "Release" -A"x86" -DBUILD_TESTING=OFF)
         cmake --build build --config "Release"
         # list files
         ls -l build/Release
@@ -46,6 +47,7 @@ jobs:
         mkdir -p ${dist}
         mv build/Release/uv_a.lib  ${dist}/uv.lib
         # shared library
-        mv build/Release/* ${ARCH}/
+        mv build/Release/uv.dll ${ARCH}/
+        mv build/Release/uv.lib ${ARCH}/
         # list files
         ls -l ${ARCH}/
