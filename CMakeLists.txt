@@ -612,6 +612,11 @@ if(UNIX OR MINGW)
 endif()
 
 if(MSVC)
+  add_compile_options(
+      $<$<CONFIG:>:/MT>
+      $<$<CONFIG:Debug>:/MTd>
+      $<$<CONFIG:Release>:/MT>
+  )
   install(DIRECTORY include/ DESTINATION include)
   install(FILES LICENSE DESTINATION .)
   install(TARGETS uv uv_a
