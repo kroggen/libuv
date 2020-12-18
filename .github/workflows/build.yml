@@ -34,7 +34,9 @@ jobs:
 
     - name: list dependencies
       shell: cmd
-      run: dumpbin /dependents x64\uv.dll
+      run: |
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+        dumpbin /dependents x64\uv.dll
 
     - name: Build x86
       if: false  # build for Windows 32-bit is disabled
