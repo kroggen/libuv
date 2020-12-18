@@ -18,7 +18,7 @@ jobs:
         export ARCH="x64"
         rm -rf build
         mkdir -p build
-        (cd build && cmake .. -A"x64" -DBUILD_TESTING=OFF --verbose)
+        (cd build && cmake .. -A"x64" -DBUILD_TESTING=OFF)
         cmake --build build --config "Release" --verbose
         # list files
         ls -l build/Release
@@ -42,7 +42,7 @@ jobs:
         export ARCH="x86"
         rm -rf build
         mkdir -p build
-        (cd build && cmake .. -A"x86" -DBUILD_TESTING=OFF --verbose)
+        (cd build && cmake .. -A"x86" -DBUILD_TESTING=OFF)
         cmake --build build --config "Release" --verbose
         # list files
         ls -l build/Release
