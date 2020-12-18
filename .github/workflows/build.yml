@@ -31,9 +31,10 @@ jobs:
         mv build/Release/uv.lib ${ARCH}/
         # list files
         ls -l ${ARCH}/
-        # list dependencies
-        dumpbin /dependents ${ARCH}/uv.dll
 
+    - name: list dependencies
+      shell: cmd
+      run: dumpbin /dependents x64\uv.dll
 
     - name: Build x86
       if: false  # build for Windows 32-bit is disabled
