@@ -18,7 +18,7 @@ jobs:
         export ARCH="x64"
         rm -rf build
         mkdir -p build
-        cd build && cmake .. -A"x64"
+        (cd build && cmake .. -A"x64")
         cmake --build build --config "Release"
         # list files
         ls -l build/Release
@@ -37,7 +37,7 @@ jobs:
         export ARCH="x86"
         rm -rf build
         mkdir -p build
-        cd build && cmake .. -A"x86"
+        (cd build && cmake .. -A"x86")
         cmake --build build --config "Release"
         # list files
         ls -l build/Release
