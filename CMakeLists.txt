@@ -3,6 +3,7 @@ project(libuv LANGUAGES C)
 
 cmake_policy(SET CMP0057 NEW) # Enable IN_LIST operator
 cmake_policy(SET CMP0064 NEW) # Support if (TEST) operator
+cmake_policy(SET CMP0091 NEW)
 
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
@@ -335,6 +336,14 @@ if(APPLE OR CMAKE_SYSTEM_NAME MATCHES "DragonFly|FreeBSD|Linux|NetBSD|OpenBSD")
   list(APPEND uv_test_libraries util)
 endif()
 
+if(MSVC)
+  add_compile_options(
+      $<$<CONFIG:>:/MT>
+      $<$<CONFIG:Debug>:/MTd>
+      $<$<CONFIG:Release>:/MT>
+  )
+endif()
+
 add_library(uv SHARED ${uv_sources})
 target_compile_definitions(uv
   INTERFACE
@@ -612,11 +621,10 @@ if(UNIX OR MINGW)
 endif()
 
 if(MSVC)
-  add_compile_options(
-      $<$<CONFIG:>:/MT>
-      $<$<CONFIG:Debug>:/MTd>
-      $<$<CONFIG:Release>:/MT>
-  )
+  set_property(TARGET uv PROPERTY
+               MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+  set_property(TARGET uv_a PROPERTY
+               MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
   install(DIRECTORY include/ DESTINATION include)
   install(FILES LICENSE DESTINATION .)
   install(TARGETS uv uv_a
